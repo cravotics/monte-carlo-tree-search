@@ -23,7 +23,7 @@ header {
 nav {
     position: fixed;
     top: 20px;
-    left: 20px;
+    right: 20px;  /* Moved to the right */
     z-index: 1000;
 }
 
@@ -42,14 +42,14 @@ nav {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     padding: 10px;
     position: fixed;
-    top: 70px;
-    left: -250px;
+    top: 60px; /* Below the burger icon */
+    right: -250px; /* Hidden by default */
     width: 200px;
     transition: all 0.3s ease;
 }
 
 .menu.active {
-    left: 20px;
+    right: 20px; /* Slides into view */
 }
 
 .menu li {
