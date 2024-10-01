@@ -6,49 +6,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Monte Carlo Tree Search - CMSC818B</title>
     <link rel="stylesheet" href="public/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnH2N2hYfXVHpa19aSOgKPT6MOZrRg1lRCzK7vB1C5EjRv8ZOsE/AxNVyvNzOsjPWWoL3qhZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 <body>
-
-<!-- Placeholder for dynamically added Burger Menu -->
-<nav id="nav-menu"></nav>
-
+<ul>
+  <li><a href="default.asp">Home</a></li>
+  <li><a href="news.asp">News</a></li>
+  <li><a href="contact.asp">Contact</a></li>
+  <li><a href="about.asp">About</a></li>
+</ul>
 <header>
     <h1><i class="fas fa-brain"></i> Monte Carlo Tree Search</h1>
-    <p><i class="fas fa-robot"></i> Mini Project - CMSC818B</p>
+    <p>Mini Project- 1 - CMSC818B</p>
 </header>
 
 <div class="container">
-    <!-- Only Abstract and Team Members on the main page -->
     <section id="abstract">
         <h2><i class="fas fa-file-alt"></i> Abstract</h2>
         <p>
-            Monte Carlo Tree Search (MCTS) is a powerful search algorithm used in decision-making and artificial intelligence, especially in games and real-time simulations. This project focuses on implementing and improving the MCTS algorithm to demonstrate how it works, including its ability to balance exploration and exploitation during the search for optimal decisions.
-        </p>
+            Monte Carlo Tree Search (MCTS) is a decision-making algorithm that has revolutionized the way artificial intelligence (AI) systems make strategic choices, especially in complex environments such as games, robotics, and simulations. At its core, MCTS helps systems explore different future possibilities by simulating random outcomes. It then builds a "tree" of decisions, using the results of these simulations to guide future actions toward the most promising paths. This makes MCTS both powerful and efficient at solving problems that involve many potential choices.        </p>
         <p>
-            The algorithm utilizes random sampling to simulate possible future outcomes and builds a decision tree based on these simulations, leading to increasingly accurate decisions over time. MCTS is highly flexible and can be applied to various complex problems such as board games, robotics, and optimization tasks.
-        </p>
+            The algorithm works by balancing two key ideas: exploration, where it tries out new possibilities, and exploitation, where it focuses on the most promising options based on what it has learned so far. One famous application of MCTS is in game-playing AI systems, such as AlphaGo, where it was used to outsmart human champions in the board game Go. Beyond games, MCTS is increasingly being applied in robotics to help robots make decisions in uncertain and dynamic environments.        </p>
         <p>
-            In this project, we break down the technical aspects of Monte Carlo Tree Search in simple terms, making it accessible to individuals with varying levels of expertise in artificial intelligence.
-        </p>
+            In this project, we explore how Monte Carlo Tree Search can be adapted and applied to decision-making in robotic systems. We explain the algorithm in simple terms, show how it can be used in real-world robotics scenarios, and discuss its potential to improve how robots navigate, interact with their surroundings, and make autonomous decisions.        </p>
     </section>
 
     <section id="team">
         <h2><i class="fas fa-users"></i> Team Members</h2>
         <ul class="team-members">
-            <li><i class="fas fa-user"></i> Sai Jagadeesh Muralikrishnan</li>
-            <li><i class="fas fa-user"></i> Nitish Ravishankar Raveendran</li>
-            <li><i class="fas fa-user"></i> Varun Lakshmanan</li>
+            <li>Sai Jagadeesh Muralikrishnan</a></li>
+            <li>Nitish Ravishankar Raveendran</a></li>
+            <li>Varun Lakshmanan</a></li>
         </ul>
     </section>
 </div>
 
 <footer>
-    <p>&copy; 2024 <i class="fas fa-code"></i> CMSC818B - Monte Carlo Tree Search</p>
+    <p>&copy; 2024 Sai Jagadeesh, Nitish, Varun - Monte Carlo Tree Search</p>
 </footer>
-
-<!-- Link the external JavaScript file -->
-<script src="public/js/script.js"></script>
 
 </body>
 </html>
