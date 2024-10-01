@@ -10,12 +10,30 @@
 </head>
 <body>
 
+<!-- Burger Menu -->
+<nav>
+    <div class="burger-icon" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <ul class="menu" id="menu">
+        <li><a href="#summary">1. Summary of the topic</a></li>
+        <li><a href="#definition">2. Formal definition</a></li>
+        <li><a href="#key-results">3. Overview of key results</a></li>
+        <li><a href="#decision-making">4. Discussion of decision-making in robotics</a></li>
+        <li><a href="#variants">5. Description of variants</a></li>
+        <li><a href="#applications">6. Overview of important applications</a></li>
+        <li><a href="#open-questions">7. Open research questions</a></li>
+        <li><a href="#references">8. References</a></li>
+    </ul>
+</nav>
+
 <header>
     <h1><i class="fas fa-brain"></i> Monte Carlo Tree Search</h1>
     <p><i class="fas fa-robot"></i> Mini Project - CMSC818B</p>
 </header>
 
 <div class="container">
+    <!-- Only Abstract and Team Members on the main page -->
     <section id="abstract">
         <h2><i class="fas fa-file-alt"></i> Abstract</h2>
         <p>
@@ -42,6 +60,13 @@
 <footer>
     <p>&copy; 2024 <i class="fas fa-code"></i> CMSC818B - Monte Carlo Tree Search</p>
 </footer>
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('active');
+    }
+</script>
 
 </body>
 </html>
