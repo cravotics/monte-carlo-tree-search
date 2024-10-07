@@ -1,0 +1,243 @@
+/* General Styles for Enhanced, Visually Appealing Appearance */
+body {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    line-height: 1.8;
+    background: linear-gradient(to right, #0066cc, #33ccff);
+    color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: linear-gradient(to right, #0066cc, #33ccff);
+    padding: 30px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+header h1 {
+    font-size: 3em;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+header h2 {
+    font-size: 3em;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+header p {
+    font-size: 1.3em;
+    color: #333;
+}
+
+nav {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.3s, transform 0.3s;
+}
+
+nav ul li a:hover {
+    color: #4CAF50;
+    text-decoration: underline;
+    transform: scale(1.1);
+}
+
+section {
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    margin: 30px auto;
+    max-width: 1000px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+h2 {
+    color: #4CAF50;
+    border-bottom: 3px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+h3 {
+    color: #388E3C;
+    margin-top: 25px;
+    font-size: 1.5em;
+}
+
+p, ul {
+    font-size: 1.2em;
+    margin-bottom: 25px;
+}
+
+ul {
+    list-style-type: disc;
+    margin-left: 30px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    font-size: 1em;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-top: 3px solid #388E3C;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 8px 0;
+}
+
+a {
+    color: #0645ad;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #388E3C;
+    text-decoration: underline;
+}
+
+/* Styling for Tables, Quotes, and Equations */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    font-size: 1.1em;
+}
+
+th {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+blockquote {
+    border-left: 5px solid #4CAF50;
+    margin: 25px;
+    padding-left: 20px;
+    color: #555;
+    font-style: italic;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+code {
+    background-color: #f4f4f4;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+pre {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    overflow: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation for MCTS Visualization */
+#mcts-sketch {
+    border: 3px solid #4CAF50;
+    border-radius: 12px;
+    margin: 30px auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Styling for Enhanced Interactions */
+.button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        font-size: 0.95em;
+    }
+
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    section {
+        margin: 15px;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 2em;
+    }
+
+    header p {
+        font-size: 1.1em;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .button {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+}

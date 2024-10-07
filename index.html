@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Carlo Tree Search (MCTS) - Explained in Layman's Terms</title>
+    <link rel="stylesheet" href="wiki.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.dom.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Monte Carlo Tree Search (MCTS)</h1>
+        <h2>CMSC818B  - Mini Project -1</h2>
+        <p>A Simple Guide for Everyone</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#summary">Summary</a></li>
+            <li><a href="#formal-definition">Formal Definition</a></li>
+            <li><a href="#key-results">Key Results</a></li>
+            <li><a href="#robotics">MCTS in Robotics</a></li>
+            <li><a href="#variants">Variants</a></li>
+            <li><a href="#applications">Applications</a></li>
+            <li><a href="#open-questions">Open Research Questions</a></li>
+            <li><a href="#references">References</a></li>
+            <li><a href="#mcts-animation">MCTS Animation</a></li>
+        </ul>
+    </nav>
+    
+    <section id="summary">
+        <h2>Summary of Monte Carlo Tree Search</h2>
+        <p>Monte Carlo Tree Search (MCTS) is a smart way for computers to make decisions in complex situations, like playing board games. Think of it as testing different strategies in a game by simulating possible moves and picking the best one. Instead of making random decisions, MCTS "plays out" many scenarios to see which has the most promising outcome.</p>
+        <p>This approach is similar to how you might solve a maze. You could try different paths, see how they turn out, and eventually choose the one that works best. MCTS works in a similar manner for games and situations with many options, allowing a computer to make strategic choices without needing to know everything upfront.</p>
+    </section>
+    
+    <section id="formal-definition">
+        <h2>Formal Definition Using Notation</h2>
+        <p>Formally, MCTS is an algorithm that balances between exploring new options (exploration) and taking advantage of known good moves (exploitation). It builds a "tree" of possible actions where each node represents a state, and each branch represents an action leading to a new state.</p>
+        <p>The MCTS process involves four main steps:</p>
+        <ol>
+            <li><strong>Selection:</strong> The algorithm selects the most promising node, balancing exploration and exploitation.</li>
+            <li><strong>Expansion:</strong> A new node is added to expand the tree if not already fully explored.</li>
+            <li><strong>Simulation:</strong> A random simulation (or "playout") is run from that node to determine potential outcomes.</li>
+            <li><strong>Backpropagation:</strong> The result of the simulation is then propagated back through the nodes, updating values to indicate how good they are.</li>
+        </ol>
+        <p>Mathematically, the value \( V(n) \) of node \( n \) is given by:</p>
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
+            <strong>
+                \[ V(n) = \frac{1}{N(n)} \sum_{i=1}^{N(n)} R_i \]
+            </strong>
+        </div>
+        <p>where \( N(n) \) is the number of visits to the node, and \( R_i \) represents the reward from the \( i \)-th simulation passing through node \( n \).</p>
+        <p>The selection of nodes uses the Upper Confidence Bound (UCB) formula to balance exploration and exploitation:</p>
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
+            <strong>
+                \[ UCB = Q(n) + C \sqrt{\frac{\ln{N(p)}}{N(n)}} \]
+            </strong>
+        </div>
+        <p>where \( Q(n) \) is the value of node \( n \), \( N(p) \) is the number of times the parent node was visited, and \( C \) is a constant that controls the balance between exploration and exploitation.</p>
+    </section>
+    
+    <section id="key-results">
+        <h2>Overview of Key Results</h2>
+        <p>MCTS has become very successful, especially in games like Go and Chess. Its biggest strength is that it can balance trying out new moves (exploration) with focusing on promising ones (exploitation). Unlike traditional algorithms that might need a complete model, MCTS can work even when there is incomplete information.</p>
+        <p>This ability has allowed computers to compete at the highest levels in games such as Go, which has too many possible moves for traditional methods. MCTS's flexibility means it can be applied in different areas, not just games.</p>
+    </section>
+    
+    <section id="robotics">
+        <h2>MCTS in Robotics</h2>
+        <p>In robotics, decision-making is critical for tasks like navigating through a cluttered environment. Imagine a delivery robot trying to find the best path in a room filled with obstacles. MCTS helps by simulating different paths, considering the obstacles in the way, and then selecting the path that is most likely to succeed.</p>
+        <p>It is also used in multi-robot systems. For instance, multiple robots may need to cooperate to complete a task—MCTS can help each robot decide how to best act to help achieve the overall goal. It's a bit like playing a game of soccer where each player (robot) needs to figure out what to do to help the team win.</p>
+    </section>
+    
+    <section id="variants">
+        <h2>Variants of MCTS</h2>
+        <h3>Upper Confidence Bounds for Trees (UCT)</h3>
+        <p>UCT is one of the most widely used variants of MCTS. It uses the UCB formula to help decide which moves to explore, striking a balance between trying new things and focusing on promising paths.</p>
+        <h3>Progressive Widening</h3>
+        <p>In scenarios where there are too many possible actions to explore, Progressive Widening helps by gradually adding more actions to explore rather than trying to handle all possibilities at once. This makes MCTS more manageable in complex situations.</p>
+        <h3>Double Progressive Widening</h3>
+        <p>Double Progressive Widening extends the concept of Progressive Widening to both actions and states. This is especially helpful when both the actions and resulting states are large, ensuring that the search remains efficient.</p>
+    </section>
+    
+    <section id="applications">
+        <h2>Important Applications of MCTS</h2>
+        <p>MCTS has many important applications beyond traditional board games:</p>
+        <h3>Video Games</h3>
+        <p>MCTS is used in video games to help non-playable characters (NPCs) make intelligent decisions, making games more challenging and interesting for players. It allows NPCs to adapt dynamically to player actions.</p>
+        <h3>Autonomous Vehicles</h3>
+        <p>MCTS can be used in autonomous vehicles to determine the safest and most efficient routes. It helps the vehicle simulate different routes, factoring in uncertainties like traffic and road conditions, before making a decision.</p>
+        <h3>Optimization Problems</h3>
+        <p>MCTS is also applied in solving optimization problems, such as scheduling and resource allocation. When there are many possible solutions, MCTS helps explore different paths to find the most optimal solution efficiently.</p>
+    </section>
+    
+    <section id="open-questions">
+        <h2>Open Research Questions</h2>
+        <p>Even though MCTS has proven effective, there are still open questions for research:</p>
+        <ul>
+            <li><strong>Scalability:</strong> How can we make MCTS scale effectively when dealing with extremely large decision spaces?</li>
+            <li><strong>Handling Uncertainty:</strong> How can MCTS better handle situations with high uncertainty, such as real-world applications where outcomes are unpredictable?</li>
+            <li><strong>Integration with Learning:</strong> Combining MCTS with reinforcement learning has shown promise (e.g., AlphaGo). The challenge is how to generalize this integration for broader applications.</li>
+        </ul>
+    </section>
+
+    <section id="mcts-animation">
+        <h2>Monte Carlo Tree Search Animation</h2>
+        <div id="mcts-sketch"></div>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Monte Carlo Tree Search Visualization</title>
+            <script src="https://d3js.org/d3.v6.min.js"></script>
+            <style>
+                .node {
+                    stroke: #000;
+                    stroke-width: 1.5px;
+                }
+                .link {
+                    fill: none;
+                    stroke: #555;
+                    stroke-width: 1.5px;
+                }
+                text {
+                    font: 12px sans-serif;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="mcts-visualization"></div>
+            <div id="explanation">
+                <h2>Monte Carlo Tree Search Visualization Explained</h2>
+                <p>
+                    This visualization shows how Monte Carlo Tree Search (MCTS) works step by step. MCTS is an algorithm used for decision-making in games and other scenarios where many possible moves or actions exist.
+                    The visualization cycles through the four key stages of MCTS: Selection, Expansion, Simulation, and Backpropagation. Below is an explanation of each stage in layman's terms:
+                </p>
+                <h3>1. Selection Stage</h3>
+                <p>
+                    In the selection stage, the algorithm navigates through the tree to choose the most promising node to explore. It starts at the root (which represents the current state) and follows a path based on past experience, aiming to balance exploration and exploitation.
+                    In the visualization, the root node (in green) has three children (in red, green, and blue), representing different possible moves or actions. The selection stage is the process of deciding which branch to follow next.
+                </p>
+                <h3>2. Expansion Stage</h3>
+                <p>
+                    After selecting the most promising node, the expansion stage adds new nodes to the tree. This means the algorithm explores new actions or moves that haven't been tried before. In the visualization, you will see an additional node ("Node 4" in blue) added to the existing structure.
+                    This represents the algorithm expanding its knowledge by trying something new.
+                </p>
+                <h3>3. Simulation Stage</h3>
+                <p>
+                    During the simulation stage, the algorithm runs a "playout" from the newly added node to estimate its potential outcome. It essentially simulates what would happen if it took that action, giving it an idea of how good or bad the move might be.
+                    In the visualization, a new "Simulated" node (in light blue) is added, representing the simulated outcome from that point. This helps the algorithm predict the value of exploring that branch.
+                </p>
+                <h3>4. Backpropagation Stage</h3>
+                <p>
+                    In the backpropagation stage, the results of the simulation are propagated back up the tree. This means the algorithm updates the values of the nodes along the path it took, so it can learn which actions led to good results and which did not.
+                    In the visualization, a "Backprop" node (in yellow) represents the result of this process, updating the knowledge of the entire tree to make better decisions in the future.
+                </p>
+                <p>
+                    By repeating these four stages, MCTS builds a better understanding of which actions are likely to lead to success. This process is what allows computers to make smart decisions in games like Chess or Go, or in any situation where multiple choices need to be evaluated.
+                </p>
+            </div>
+            <script>
+                let width = 1000;
+                let height = 400;
+        
+                let stages = ["Selection", "Expansion", "Simulation", "Backpropagation"];
+                let stageIndex = 0;
+        
+                let svg = d3.select("#mcts-visualization")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+        
+                function updateVisualization() {
+                    svg.selectAll("*").remove();
+                    let stage = stages[stageIndex];
+                    
+                    let treeData;
+                    switch(stage) {
+                        case "Selection":
+                            treeData = getSelectionTree();
+                            break;
+                        case "Expansion":
+                            treeData = getExpansionTree();
+                            break;
+                        case "Simulation":
+                            treeData = getSimulationTree();
+                            break;
+                        case "Backpropagation":
+                            treeData = getBackpropagationTree();
+                            break;
+                    }
+        
+                    drawTree(treeData);
+                    stageIndex = (stageIndex + 1) % stages.length;
+                }
+        
+                function drawTree(data) {
+                    let root = d3.hierarchy(data);
+                    let treeLayout = d3.tree().size([width - 200, height - 200]);
+                    treeLayout(root);
+        
+                    // Links
+                    svg.selectAll('.link')
+                        .data(root.links())
+                        .enter()
+                        .append('line')
+                        .classed('link', true)
+                        .attr('x1', d => d.source.x + 100)
+                        .attr('y1', d => d.source.y + 50)
+                        .attr('x2', d => d.target.x + 100)
+                        .attr('y2', d => d.target.y + 50);
+        
+                    // Nodes
+                    svg.selectAll('.node')
+                        .data(root.descendants())
+                        .enter()
+                        .append('circle')
+                        .classed('node', true)
+                        .attr('cx', d => d.x + 100)
+                        .attr('cy', d => d.y + 50)
+                        .attr('r', 20)
+                        .attr('fill', d => d.data.color);
+        
+                    // Labels
+                    svg.selectAll('.label')
+                        .data(root.descendants())
+                        .enter()
+                        .append('text')
+                        .classed('label', true)
+                        .attr('x', d => d.x + 100)
+                        .attr('y', d => d.y + 50)
+                        .attr('dy', '.35em')
+                        .text(d => d.data.name);
+                }
+        
+                function getSelectionTree() {
+                    return {
+                        name: "Root",
+                        color: "green",
+                        children: [
+                            { name: "Node 1", color: "red" },
+                            { name: "Node 2", color: "green" },
+                            { name: "Node 3", color: "blue" }
+                        ]
+                    };
+                }
+        
+                function getExpansionTree() {
+                    return {
+                        name: "Root",
+                        color: "green",
+                        children: [
+                            { name: "Node 1", color: "red" },
+                            { name: "Node 2", color: "green" },
+                            { name: "Node 3", color: "blue" },
+                            { name: "Node 4", color: "blue" }
+                        ]
+                    };
+                }
+        
+                function getSimulationTree() {
+                    return {
+                        name: "Root",
+                        color: "green",
+                        children: [
+                            { name: "Node 1", color: "red" },
+                            { name: "Node 2", color: "green" },
+                            { name: "Node 3", color: "blue" },
+                            { name: "Simulated", color: "lightblue" }
+                        ]
+                    };
+                }
+        
+                function getBackpropagationTree() {
+                    return {
+                        name: "Root",
+                        color: "green",
+                        children: [
+                            { name: "Node 1", color: "red" },
+                            { name: "Node 2", color: "green" },
+                            { name: "Node 3", color: "blue" },
+                            { name: "Backprop", color: "yellow" }
+                        ]
+                    };
+                }
+        
+                setInterval(updateVisualization, 2000);
+                updateVisualization();
+            </script>
+  
+    </section>
+    
+    <section id="references">
+        <h2>References</h2>
+        <ul>
+            <li>Browne, C. B., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." <em>IEEE Transactions on Computational Intelligence and AI in Games</em>.</li>
+            <li>Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." <em>Nature</em>.</li>
+            <li>Coulom, R. (2006). "Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search."</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>CMSC818B Mini Project 1 - Team Members: Sai Jagadeesh Muralikrishnan, Varun Laksmanan, Nitish Ravichandran Raveendran</p>
+        <p>&copy; 2024 Monte Carlo Tree Search Guide</p>
+    </footer>
+</body>
+</html>
