@@ -106,27 +106,57 @@
     
     <section id="variants">
         <h2>Variants of MCTS</h2>
-        
-        <h3>1. Progressive Widening</h3>
-        <p><strong>Progressive Widening</strong> is used in scenarios where the action space is very large or continuous, such as in robotics. Instead of considering all possible actions from a node, Progressive Widening gradually increases the number of actions explored as the node is visited more frequently. This approach helps MCTS to focus on the most promising areas first and only expand to other options as more information becomes available, making it more efficient in high-dimensional problems.</p>
-        <p><strong>Example:</strong> Imagine a drone navigating a large forest where it can fly in any direction at any speed. With an almost infinite number of possible actions, MCTS would be overwhelmed. Progressive Widening helps by initially considering only a few directions and speeds, gradually expanding the options as the drone gathers more data. This allows the drone to focus on the most promising directions, adapting as it learns more about the environment.</p>
-        
-        <h3>2. Determinization Techniques (e.g., UCT-GII)</h3>
-        <p><strong>Determinization Techniques</strong> are used for decision-making problems where there is hidden or incomplete information, such as card games or scenarios with uncertain robot perception. In this variant, multiple possible scenarios (or "determinized" versions) of the problem are created by sampling from the uncertain elements, and MCTS is applied to each one. The results are then averaged to guide decision-making under uncertainty. This approach allows MCTS to make more informed decisions when the true state of the environment is not fully known.</p>
-        <p><strong>Example:</strong> Think of a robot playing a card game where it can't see the opponent's cards. The robot can create multiple guesses about what the opponent's cards might be (determinized versions) and use MCTS to simulate different strategies for each guess. By averaging the results across these scenarios, the robot can choose a move that performs well across the most likely situations.</p>
-        
-        <h3>3. Heuristic-Guided MCTS</h3>
-        <p>In some applications, <strong>Heuristic-Guided MCTS</strong> uses domain-specific knowledge to guide the search by incorporating heuristics. For example, in robotic manipulation tasks, physics-based heuristics can help the algorithm predict the outcome of different actions more accurately during simulations. By using additional knowledge, Heuristic-Guided MCTS speeds up the convergence towards optimal solutions, making it suitable for complex tasks where certain rules or guidelines can improve search efficiency.</p>
-        <p><strong>Example:</strong> Suppose a robotic arm is assembling a model airplane and needs to decide which parts to attach first. Heuristic-Guided MCTS can use physics rules (like how gravity affects different parts) to prioritize attaching the heavier parts first for stability, helping the robot make better decisions faster.</p>
-        
-        <h3>4. Rapid Action Value Estimation (RAVE)</h3>
-        <p><strong>RAVE</strong> is a variant that accelerates learning by sharing information across different paths in the search tree. Instead of updating the value estimates only for the specific sequence of moves simulated, RAVE also updates other nodes where the same action was taken in different contexts. This sharing of information allows MCTS to learn the value of actions more quickly, which is particularly beneficial in environments with large state spaces or when simulations are computationally expensive.</p>
-        <p><strong>Example:</strong> Consider a robot vacuum cleaner trying to find the most efficient cleaning pattern for a room. RAVE can speed up the decision-making by sharing information across different cleaning sequences. For instance, if moving left and then forward gives a good result, this information can be reused for other similar moves (like forward then left), allowing the robot to learn effective cleaning paths quickly.</p>
-        
-        <h3>5. Parallel MCTS</h3>
-        <p><strong>Parallel MCTS</strong> is designed to speed up the algorithm by distributing the search process across multiple processors or threads. There are different techniques for parallelization, such as root parallelization, where different threads explore the tree independently from the root, or leaf parallelization, where multiple simulations are conducted simultaneously for the same node. <strong> This variant is especially useful for real-time decision-making tasks where rapid results are needed</strong>, such as in robotic control or multiplayer video games.</p>
-        <p><strong>Example:</strong> Imagine a team of robots playing soccer, where each robot has to make quick decisions on whether to pass, shoot, or defend. Parallel MCTS can help by running multiple simulations of different strategies simultaneously across the robots, speeding up the decision-making process and allowing each robot to coordinate and act in real-time.</p>
+        <p>Monte Carlo Tree Search (MCTS) has several variants that adapt the basic approach to different contexts and improve its efficiency, scalability, or applicability. Here are some of the most common variants and the key differences between them:</p>
+    
+        <h3>1. Basic MCTS (Standard)</h3>
+        <p>The <strong>basic MCTS algorithm</strong> consists of four steps: <strong>Selection, Expansion, Simulation,</strong> and <strong>Backpropagation</strong>. The original form of MCTS follows a standard implementation of these steps, with nodes selected based on criteria like the <strong>Upper Confidence Bound for Trees (UCT)</strong>.</p>
+    
+        <h3>2. UCT (Upper Confidence Bound for Trees)</h3>
+        <p><strong>Key Feature:</strong> UCT is a specific method of node selection within MCTS that <strong>balances exploration (trying less explored nodes) and exploitation (focusing on promising nodes)</strong>.</p>
+        <p><strong>Difference:</strong> UCT uses a formula based on the <strong>Upper Confidence Bound (UCB)</strong> to decide which node to visit, ensuring a balance between gaining more information about lesser-known parts of the tree and focusing on the current best options.</p>
+        <p><strong>Advantage:</strong> UCT helps the algorithm focus on the <strong>best moves while still occasionally trying new ones</strong> to avoid missing out on potential opportunities.</p>
+    
+        <h3>3. RAVE (Rapid Action Value Estimation)</h3>
+        <p><strong>Key Feature:</strong> RAVE is a technique used to <strong>speed up the convergence of MCTS</strong> by sharing information across similar states.</p>
+        <p><strong>Difference:</strong> It estimates the value of a move not just from the context in which it has been played, but also from <strong>other contexts in the tree where the move was possible</strong>. It gives earlier and more reliable estimates of move quality.</p>
+        <p><strong>Advantage:</strong> RAVE accelerates MCTS by <strong>quickly propagating information about move effectiveness</strong>, reducing the number of simulations required to get accurate results. It is especially useful in the early stages of exploration.</p>
+    
+        <h3>4. AMAF (All Moves As First)</h3>
+        <p><strong>Key Feature:</strong> This is an estimation method similar to RAVE. It assumes that a <strong>move should have similar value</strong> regardless of the point in a sequence in which it is made.</p>
+        <p><strong>Difference:</strong> AMAF works by treating <strong>moves made later in a simulation as if they were played at the first opportunity</strong>. This provides more data for evaluating moves, even though the move's position may have differed.</p>
+        <p><strong>Advantage:</strong> This helps the MCTS <strong>converge faster by effectively increasing the sample size</strong> of move evaluations.</p>
+    
+        <h3>5. Progressive Widening</h3>
+        <p><strong>Key Feature:</strong> Limits the <strong>branching factor</strong> by adding new children incrementally as more simulations are performed.</p>
+        <p><strong>Difference:</strong> Instead of expanding every possible move immediately, <strong>progressive widening adds moves to the search tree gradually</strong>, with a selection bias towards promising actions.</p>
+        <p><strong>Advantage:</strong> This helps <strong>control the number of child nodes</strong> and improves computational efficiency, especially in games with a large branching factor where exploring all possible moves at once would be impractical.</p>
+    
+        <h3>6. Progressive Bias</h3>
+        <p><strong>Key Feature:</strong> Uses <strong>heuristic information</strong> to bias the selection of nodes within the MCTS process.</p>
+        <p><strong>Difference:</strong> Progressive bias alters the <strong>UCT formula</strong> to include heuristic scores for different nodes, making it more likely that <strong>promising moves are selected earlier</strong> in the search process.</p>
+        <p><strong>Advantage:</strong> When domain knowledge is available (like heuristic evaluation of a board position), this variant helps the search to <strong>converge faster by prioritizing likely good moves</strong> based on that knowledge.</p>
+    
+        <h3>7. P-UCT (Policy Upper Confidence Bound for Trees)</h3>
+        <p><strong>Key Feature:</strong> Uses a <strong>policy network</strong> to guide the selection of nodes.</p>
+        <p><strong>Difference:</strong> P-UCT leverages a <strong>policy network (from deep learning)</strong> to bias MCTS towards moves that have higher prior probabilities, instead of relying purely on UCB for exploration and exploitation.</p>
+        <p><strong>Advantage:</strong> The policy network helps MCTS <strong>make more informed decisions</strong> by guiding the search, leading to fewer simulations needed to identify strong moves. It’s used in implementations like AlphaGo.</p>
+    
+        <h3>8. Nested Monte Carlo Search</h3>
+        <p><strong>Key Feature:</strong> Uses a <strong>hierarchy of Monte Carlo searches</strong> to refine the evaluation of moves.</p>
+        <p><strong>Difference:</strong> In a nested search, a Monte Carlo search at a higher level calls another Monte Carlo search at a lower level for evaluating nodes.</p>
+        <p><strong>Advantage:</strong> This can <strong>increase the precision of move evaluation</strong> and lead to stronger decision-making, particularly in puzzles or games that require precise evaluation at many levels of depth.</p>
+    
+        <h3>9. Parallel MCTS</h3>
+        <p><strong>Key Feature:</strong> <strong>Parallelizes the MCTS algorithm</strong> across multiple processors or threads to speed up simulations.</p>
+        <p><strong>Difference:</strong> Variants like <strong>root parallelization</strong> (starting multiple searches from the root node) or <strong>leaf parallelization</strong> (running rollouts in parallel) are used to speed up the MCTS process.</p>
+        <p><strong>Advantage:</strong> Significantly <strong>speeds up the search</strong> by using multiple CPUs or GPUs, enabling more simulations to be run in the same amount of time.</p>
+    
+        <h3>10. Transpositions (Transposition Tables)</h3>
+        <p><strong>Key Feature:</strong> Transposition tables <strong>store information about game states</strong> that have been visited multiple times.</p>
+        <p><strong>Difference:</strong> MCTS with transposition tables avoids <strong>re-exploring nodes</strong> that represent the same game state but are reached via different sequences of moves.</p>
+        <p><strong>Advantage:</strong> Reduces redundant calculations, especially in games with a <strong>high number of transpositions</strong> (i.e., equivalent states reachable through different move orders).</p>
     </section>
+    
     
     <section id="pseudocode">
         <h2>Pseudocode for Monte Carlo Tree Search (MCTS)</h2>
