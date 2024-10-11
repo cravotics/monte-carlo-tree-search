@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Carlo Tree Search (MCTS) - CMSC818B Mini Project 1</title>
+    <link rel="stylesheet" href="wiki.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.dom.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Monte Carlo Tree Search (MCTS)</h1>
+        <h2>CMSC818B  - Mini Project -1</h2>
+        <h3>Team Members: Sai Jagadeesh Muralikrishnan, Varun Lakshmanan, Nitish Ravichandran Raveendran</h3>
+        <p>A Simple Guide for Everyone</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#summary">Summary</a></li>
+            <li><a href="#formal-definition">Formal Definition</a></li>
+            <li><a href="#mcts-visualization">MCTS Animation</a></li>
+            <li><a href="#key-results">Key Results</a></li>
+            <li><a href="#robotics">MCTS in Decision Making Robotics</a></li>
+            <li><a href="#variants">Variants</a></li>
+            <li><a href="#pseudocode">Pseudocode</a></li>
+            <li><a href="#applications">Applications</a></li>
+            <li><a href="#open-questions">Open Research Questions</a></li>
+            <li><a href="#references">References</a></li>
+
+        </ul>
+    </nav>
+    
+    <section id="summary">
+        <h2>Summary of Monte Carlo Tree Search</h2>
+        <p>Monte-Carlo Tree Search (MCTS) is a powerful algorithm used to make decisions by exploring potential future outcomes in a tree-like structure. Imagine you're playing a game like chess; there are many possible moves you could make, and each move leads to a different set of possibilities. MCTS helps to identify the best move by simulating different potential sequences of actions (paths) and assessing their outcomes. The algorithm uses random sampling of these paths to estimate the potential value of different actions, guiding it towards exploring more promising options. It’s like trying different routes on a map to see which path leads to the best destination while gradually focusing more on the most promising routes.</p>
+        <p>The strength of MCTS lies in its balance between exploration (trying out less-known possibilities) and exploitation (focusing on the known good moves). It continuously updates its strategy based on new information from these simulations, refining the search towards the most advantageous actions. This makes MCTS suitable for problems where the search space is vast and it's impossible to compute all possible outcomes, such as complex board games or real-time decision-making tasks.</p>
+    </section>
+    
+    <section id="formal-definition">
+        <h2>Formal Definition of Monte Carlo Tree Search</h2>
+        <p>Monte Carlo Tree Search is a heuristic search which focuses only on the most promising nodes of the tree, where the value of these nodes is formed based on the outcomes of a number of simulations.</p>
+        <p>The Monte Carlo Tree Search is done in multiple steps:</p>
+        <h3>1. Selection:</h3>
+        <p>This process is done by traversing the tree from the root node until finding a node which contains unexplored children and is not in a terminal state. The child node is selected based on the upper confidence trees that follow the Upper Confidence Bound (UCB) rule, which is defined by the formula:</p>
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
+            <strong>
+                \[ \max_{w \in \text{children}(v)} \left( Q(w) + C \sqrt{\frac{2 \ln N(v)}{N(w)}} \right) \]
+            </strong>
+        </div>
+        <p>Where:</p>
+        <ul>
+            <li><strong>w</strong> – Child Node</li>
+            <li><strong>v</strong> – Parent Node</li>
+            <li><strong>Q(w)</strong> – Average reward or value of child node <em>w</em></li>
+            <li><strong>N(v)</strong> – Number of times node <em>v</em> is visited</li>
+            <li><strong>N(w)</strong> – Number of times child node <em>w</em> is visited</li>
+            <li><strong>C</strong> – Constant for balancing exploration and exploitation</li>
+        </ul>
+        <p>The first term \( Q(w) \) favors exploitation where the nodes have performed well historically, and the second term \( C \sqrt{\frac{2 \ln N(v)}{N(w)}} \) favors exploration where the nodes are less explored. The node with the higher UCB value is selected.</p>
+        
+        <h3>2. Expansion:</h3>
+        <p>Here, one or more new nodes are added to the node which was selected during the selection process. The new node is called the child node or leaf node.</p>
+        
+        <h3>3. Simulation:</h3>
+        <p>A random simulation (or "rollout") is performed from the newly expanded node. This involves selecting actions according to a default policy until a terminal state is reached, where a reward is obtained.</p>
+        
+        <h3>4. Backpropagation:</h3>
+        <p>Once the terminal state is reached, backpropagation is performed from the leaf node back to the root node while updating the \( Q(v) \) for all the nodes and incrementing \( N(v) \) along the path. Here, \( Q(v) \) is the sum of all the simulation outcomes in the subtree.</p>
+    </section>
+    
+    <section id="mcts-visualization">
+        <h2>Monte Carlo Tree Search Visualization</h2>
+        <p>This animation demonstrates the Monte Carlo Tree Search (MCTS) process. It illustrates the four main steps: Selection, Expansion, Simulation, and Backpropagation, showing how the algorithm navigates through the search tree to make decisions.</p>
+        <img src="mcts.gif" alt="MCTS Visualization" style="max-width:100%; height:auto;">
+        <p>In the animation:</p>
+        <ul>
+            <li><strong>Selection:</strong> The algorithm selects the most promising node, balancing exploration and exploitation.</li>
+            <li><strong>Expansion:</strong> A one or more nodes are added to expand the tree if not already fully explored.</li>
+            <li><strong>Simulation:</strong> A random simulation is run from the new node to determine potential outcomes.</li>
+            <li><strong>Backpropagation:</strong> The simulation results are propagated back through the nodes, updating their values.</li>
+        </ul>
+    </section>
+    
+    <section id="key-results">
+        <h2>Overview of Key Results</h2>
+        <p>Monte-Carlo Tree Search (MCTS) has demonstrated significant success across various domains, particularly in AI-driven game playing. One of the most remarkable achievements is in the game of Go, where traditional search techniques struggle due to the immense search space. The success of<strong> AlphaGo, which utilized MCTS in combination with deep neural networks, showcased how MCTS can guide AI to perform at a superhuman level</strong>. By simulating different move sequences and evaluating the outcomes, MCTS enabled AlphaGo to select optimal strategies and defeat world champions.</p>
+        <p>Beyond games, MCTS has proven effective in other decision-making tasks, such as <strong>robotics and real-time optimization</strong>. In robotic path planning, for instance, MCTS helps robots navigate through dynamic environments by simulating different paths and choosing the one with the highest likelihood of success. This adaptability to different problem domains is one of the key reasons why MCTS is widely used, <strong>providing near-optimal solutions in situations where exhaustive search is impractical</strong>.</p>
+        <p>MCTS also plays a crucial role in reinforcement learning (RL), where it is used to improve decision-making capabilities. Algorithms like <strong>AlphaZero and MuZero incorporate MCTS to simulate future actions and evaluate potential outcomes, enabling the agents to learn and refine their strategies over time</strong>. This integration has shown that MCTS can be effectively combined with deep learning techniques to tackle complex, high-dimensional problems across a variety of fields, including robotics, optimization, and strategic planning.</p>
+    </section>
+    
+    
+    <section id="robotics">
+        <h2>How MCTS Relates to Decision-Making for Robotics</h2>
+        <p><strong>Monte-Carlo Tree Search (MCTS)</strong> is widely used in robotics for <strong>sequential decision-making tasks</strong>, especially in scenarios where the robot needs to plan its actions under <strong>uncertainty</strong>. In robotics, decision-making often involves <strong>navigating a dynamic environment</strong>, choosing actions that optimize certain objectives (such as reaching a goal, minimizing energy use, or avoiding obstacles). MCTS helps robots make these decisions by <strong>simulating different action sequences</strong> and <strong>evaluating their potential outcomes</strong>. It is particularly beneficial in situations where the robot must <strong>decide on the best course of action in real-time</strong>, as MCTS can dynamically adapt its strategy based on new observations and information gained through simulations.</p>
+        
+        <p>One example is <strong>robotic path planning in uncertain environments</strong>, such as a robot navigating through a cluttered room or an unmapped outdoor area. Here, MCTS can <strong>simulate potential paths</strong> and <strong>predict the likelihood of success</strong> (e.g., avoiding obstacles) for each path. The robot then <strong>chooses the most promising path</strong> based on these simulations, <strong>updating its plan</strong> if new obstacles are detected. In more complex tasks, like <strong>robotic manipulation</strong>, MCTS can help the robot decide the <strong>sequence of movements</strong> needed to grasp an object or assemble a structure, considering the uncertainties in the environment and the robot's own motion.</p>
+        
+        <p>Another important application is in <strong>multi-robot coordination</strong>, where MCTS helps in <strong>deciding the optimal strategy</strong> for each robot in a group to achieve a collective goal. For instance, in <strong>search and rescue operations</strong>, multiple drones or robots may be used to explore different areas or search for survivors. MCTS can be used to <strong>decide which regions each robot should explore</strong> by simulating different allocation strategies and choosing the one that maximizes coverage and minimizes overlap. Similarly, in industrial settings, robots working together on a task, such as <strong>transporting objects in a warehouse</strong>, can use MCTS to <strong>optimize their paths</strong> and <strong>reduce potential collisions or delays</strong>.</p>
+    </section>
+    
+    
+    
+    <section id="variants">
+        <h2>Variants of MCTS</h2>
+        
+        <h3>1. Progressive Widening</h3>
+        <p><strong>Progressive Widening</strong> is used in scenarios where the action space is very large or continuous, such as in robotics. Instead of considering all possible actions from a node, Progressive Widening gradually increases the number of actions explored as the node is visited more frequently. This approach helps MCTS to focus on the most promising areas first and only expand to other options as more information becomes available, making it more efficient in high-dimensional problems.</p>
+        <p><strong>Example:</strong> Imagine a drone navigating a large forest where it can fly in any direction at any speed. With an almost infinite number of possible actions, MCTS would be overwhelmed. Progressive Widening helps by initially considering only a few directions and speeds, gradually expanding the options as the drone gathers more data. This allows the drone to focus on the most promising directions, adapting as it learns more about the environment.</p>
+        
+        <h3>2. Determinization Techniques (e.g., UCT-GII)</h3>
+        <p><strong>Determinization Techniques</strong> are used for decision-making problems where there is hidden or incomplete information, such as card games or scenarios with uncertain robot perception. In this variant, multiple possible scenarios (or "determinized" versions) of the problem are created by sampling from the uncertain elements, and MCTS is applied to each one. The results are then averaged to guide decision-making under uncertainty. This approach allows MCTS to make more informed decisions when the true state of the environment is not fully known.</p>
+        <p><strong>Example:</strong> Think of a robot playing a card game where it can't see the opponent's cards. The robot can create multiple guesses about what the opponent's cards might be (determinized versions) and use MCTS to simulate different strategies for each guess. By averaging the results across these scenarios, the robot can choose a move that performs well across the most likely situations.</p>
+        
+        <h3>3. Heuristic-Guided MCTS</h3>
+        <p>In some applications, <strong>Heuristic-Guided MCTS</strong> uses domain-specific knowledge to guide the search by incorporating heuristics. For example, in robotic manipulation tasks, physics-based heuristics can help the algorithm predict the outcome of different actions more accurately during simulations. By using additional knowledge, Heuristic-Guided MCTS speeds up the convergence towards optimal solutions, making it suitable for complex tasks where certain rules or guidelines can improve search efficiency.</p>
+        <p><strong>Example:</strong> Suppose a robotic arm is assembling a model airplane and needs to decide which parts to attach first. Heuristic-Guided MCTS can use physics rules (like how gravity affects different parts) to prioritize attaching the heavier parts first for stability, helping the robot make better decisions faster.</p>
+        
+        <h3>4. Rapid Action Value Estimation (RAVE)</h3>
+        <p><strong>RAVE</strong> is a variant that accelerates learning by sharing information across different paths in the search tree. Instead of updating the value estimates only for the specific sequence of moves simulated, RAVE also updates other nodes where the same action was taken in different contexts. This sharing of information allows MCTS to learn the value of actions more quickly, which is particularly beneficial in environments with large state spaces or when simulations are computationally expensive.</p>
+        <p><strong>Example:</strong> Consider a robot vacuum cleaner trying to find the most efficient cleaning pattern for a room. RAVE can speed up the decision-making by sharing information across different cleaning sequences. For instance, if moving left and then forward gives a good result, this information can be reused for other similar moves (like forward then left), allowing the robot to learn effective cleaning paths quickly.</p>
+        
+        <h3>5. Parallel MCTS</h3>
+        <p><strong>Parallel MCTS</strong> is designed to speed up the algorithm by distributing the search process across multiple processors or threads. There are different techniques for parallelization, such as root parallelization, where different threads explore the tree independently from the root, or leaf parallelization, where multiple simulations are conducted simultaneously for the same node. <strong> This variant is especially useful for real-time decision-making tasks where rapid results are needed</strong>, such as in robotic control or multiplayer video games.</p>
+        <p><strong>Example:</strong> Imagine a team of robots playing soccer, where each robot has to make quick decisions on whether to pass, shoot, or defend. Parallel MCTS can help by running multiple simulations of different strategies simultaneously across the robots, speeding up the decision-making process and allowing each robot to coordinate and act in real-time.</p>
+    </section>
+    
+    <section id="pseudocode">
+        <h2>Pseudocode for Monte Carlo Tree Search (MCTS)</h2>
+        <p>The pseudocode below follows the four main steps of MCTS: Selection, Expansion, Simulation (Rollout), and Backpropagation. It explains how the algorithm navigates the search tree, adds new nodes, simulates outcomes, and updates the tree based on simulation results.</p>
+        <pre>
+    <code># Main function for the Monte Carlo Tree Search
+    def monte_carlo_tree_search(root):
+        while resources_left(time, computational_power):
+            # Step 1: Selection
+            leaf = traverse(root)
+            
+            # Step 2: Expansion
+            if not fully_expanded(leaf) and not is_terminal(leaf):
+                leaf = expand(leaf)
+            
+            # Step 3: Simulation (Rollout)
+            simulation_result = rollout(leaf)
+            
+            # Step 4: Backpropagation
+            backpropagate(leaf, simulation_result)
+            
+        # Return the best child node based on the number of visits
+        return best_child(root)
+    
+    # Function for node traversal (Selection)
+    def traverse(node):
+        while fully_expanded(node) and not is_terminal(node):
+            node = best_uct(node)
+        # Return the node that has unexplored children or is terminal
+        return node
+    
+    # Function for expanding the tree (Expansion)
+    def expand(node):
+        # Add a new child node from the list of unexplored children
+        child = pick_unvisited(node.children)
+        node.children.append(child)
+        return child
+    
+    # Function for the result of the simulation (Rollout)
+    def rollout(node):
+        # Simulate until a terminal state is reached
+        while not is_terminal(node):
+            node = rollout_policy(node)
+        # Return the outcome of the simulation
+        return result(node)
+    
+    # Function for randomly selecting a child node (Rollout Policy)
+    def rollout_policy(node):
+        return pick_random(node.children)
+    
+    # Function for backpropagation (Backpropagation)
+    def backpropagate(node, result):
+        # Update the stats of the node and propagate the result up the tree
+        while node is not None:
+            node.stats = update_stats(node, result)
+            node = node.parent
+    
+    # Function for selecting the best child based on the UCT value
+    def best_uct(node):
+        # Use the UCB formula to select the child with the highest score
+        return max(node.children, key=uct_value)
+    
+    # Function to calculate the UCT value
+    def uct_value(node):
+        # Q(node) is the average reward, N(parent) is the number of visits to the parent, N(node) is the number of visits to this node
+        C = exploration_constant
+        return node.Q + C * math.sqrt(2 * math.log(node.parent.N) / node.N)
+    
+    # Function for selecting the best child (Best Child)
+    def best_child(node):
+        # Pick the child with the highest number of visits
+        return max(node.children, key=lambda child: child.N)
+    </code>
+        </pre>
+        <p>This pseudocode ensures that the MCTS process adheres to the formal definition, covering the steps of Selection, Expansion, Simulation, and Backpropagation. Each function is designed to perform a specific task within these steps, making it a comprehensive implementation of the algorithm.</p>
+    </section>
+    
+    <section id="applications">
+        <h2>Important Applications of MCTS in RL</h2>
+        <p>MCTS has played a crucial role in advancing reinforcement learning (RL) by providing a way to simulate future actions and evaluate potential outcomes. It has helped in combining tree search with deep learning techniques, enabling agents to learn and refine their strategies over time. This integration has been particularly impactful in game-playing AI, where MCTS has been used to achieve superhuman performance, as well as in real-world decision-making scenarios.</p>
+        
+        <h3>AlphaGo and AlphaGo Zero</h3>
+        <p><strong>AlphaGo</strong> is perhaps the most famous application of MCTS, where it was used in combination with deep neural networks to conquer the ancient board game Go. Go is notorious for its vast search space—far exceeding that of chess—making traditional brute-force approaches infeasible. In AlphaGo, <strong>MCTS simulated different sequences of moves to evaluate their potential outcomes</strong>, while deep neural networks predicted the probability of winning from each state. The integration of MCTS enabled the system to <strong>efficiently explore promising moves by balancing exploration and exploitation</strong>. This approach allowed AlphaGo to achieve superhuman performance, culminating in a <strong>victory against world champion Lee Sedol in 2016</strong>, marking a significant breakthrough in AI research.</p>
+        <p>AlphaGo Zero, a successor to AlphaGo, achieved superhuman performance without using human game data. Instead, it learned entirely from self-play using reinforcement learning, starting from random play. This version further optimized the use of MCTS in conjunction with deep learning by employing a single neural network to represent both policy and value, thereby simplifying the architecture while improving performance.</p>
+        <img src="alpha_go.png" alt="AlphaGo Visualization" style="max-width:100%; height:auto;">
+    
+        <h3>AlphaZero</h3>
+        <p><strong>AlphaZero</strong>, an evolution of AlphaGo Zero, generalizes the approach to master multiple games—such as chess, shogi, and Go—without any domain-specific knowledge. In contrast to traditional game-playing programs that rely on handcrafted evaluation functions and domain-specific adaptations, <strong>AlphaZero started with no prior knowledge and learned purely through self-play</strong>, given only the game rules. The same algorithm and neural network architecture were applied to all three games, demonstrating that a <strong>general-purpose reinforcement learning algorithm can achieve superhuman performance across multiple challenging games</strong>. MCTS guided the learning process by simulating different moves during training, evaluating the outcomes, and <strong>using the results to improve the policy and value networks</strong>.</p>
+    
+        <h3>MuZero</h3>
+        <p><strong>MuZero</strong> further advances the application of MCTS by <strong>learning not only the optimal policy but also the model of the environment</strong>. It combines MCTS with <strong>model-based reinforcement learning</strong>, where the agent learns to predict the environment's dynamics (transitions and rewards) through experience. This allows MuZero to be applied to a broader range of problems, including classic board games like chess, Go, and shogi, as well as <strong>visually rich environments in Atari games</strong>. By <strong>learning a model of the environment</strong>, MuZero can simulate future outcomes using MCTS even when the underlying rules are not known, making it a <strong>powerful tool for decision-making in complex, real-world scenarios</strong>.</p>
+        
+        <h3>TreeQN and ATreeC</h3>
+        <p>In the realm of deep reinforcement learning, <strong>TreeQN and ATreeC</strong> are algorithms that incorporate MCTS into the training process to enhance decision-making capabilities. In TreeQN, <strong>MCTS is integrated with Q-learning</strong> to build a tree of future states, allowing the agent to <strong>simulate potential future scenarios</strong> to improve its action-value estimates. Similarly, <strong>ATreeC extends actor-critic methods by using MCTS to perform lookahead planning during training</strong>. These methods demonstrate how <strong>incorporating tree search within RL frameworks</strong> can help the agent learn more effective policies, particularly in <strong>environments with long-term dependencies or sparse rewards</strong>, where standard RL techniques might struggle.</p>
+    </section>
+    
+    
+    
+    <section id="open-questions">
+        <h2>Open Research Questions</h2>
+        <p>Even though MCTS has proven effective, there are still open questions for research:</p>
+        <ul>
+            <li><strong>Scalability:</strong> How can we make MCTS scale effectively when dealing with extremely large decision spaces?</li>
+            <li><strong>Handling Uncertainty:</strong> How can MCTS better handle situations with high uncertainty, such as real-world applications where outcomes are unpredictable?</li>
+            <li><strong>Integration with Learning:</strong> Combining MCTS with reinforcement learning has shown promise (e.g., AlphaGo). The challenge is how to generalize this integration for broader applications.</li>
+        </ul>
+    </section>
+    
+    <section id="references">
+        <h2>References</h2>
+        
+        <h3>MCTS Variants and Formal Definition</h3>
+        <ul>
+            <li>Browne, C. B., Powley, E., Whitehouse, D., Lucas, S. M., Cowling, P. I., Rohlfshagen, P., ... & Colton, S. (2012). "A Survey of Monte Carlo Tree Search Methods." <em>IEEE Transactions on Computational Intelligence and AI in Games</em>, 4(1), 1-43.</li>
+            <li>Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." In <em>European Conference on Machine Learning (ECML)</em> (pp. 282-293). Springer, Berlin, Heidelberg.</li>
+            <li>Coulom, R. (2006). "Efficient selectivity and backup operators in Monte-Carlo tree search." In <em>International Conference on Computers and Games</em> (pp. 72-83). Springer, Berlin, Heidelberg.</li>
+        </ul>
+        
+        <h3>AlphaGo</h3>
+        <ul>
+            <li>Silver, D., Huang, A., Maddison, C. J., Guez, A., Sifre, L., Van Den Driessche, G., ... & Hassabis, D. (2016). "Mastering the game of Go with deep neural networks and tree search." <em>Nature</em>, 529(7587), 484-489.</li>
+            <li>Silver, D., Schrittwieser, J., Simonyan, K., Antonoglou, I., Huang, A., Guez, A., ... & Hassabis, D. (2017). "Mastering Chess and Shogi by Self-Play with a General Reinforcement Learning Algorithm." <em>arXiv preprint arXiv:1712.01815</em>.</li>
+        </ul>
+        
+        <h3>AlphaZero</h3>
+        <ul>
+            <li>Silver, D., Schrittwieser, J., Simonyan, K., Antonoglou, I., Huang, A., Guez, A., ... & Hassabis, D. (2018). "A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play." <em>Science</em>, 362(6419), 1140-1144.</li>
+        </ul>
+        
+        <h3>MuZero</h3>
+        <ul>
+            <li>Schrittwieser, J., Antonoglou, I., Hubert, T., Simonyan, K., & Silver, D. (2020). "Mastering Atari, Go, Chess and Shogi by planning with a learned model." <em>Nature</em>, 588(7839), 604-609.</li>
+        </ul>
+        
+        <h3>TreeQN and ATreeC</h3>
+        <ul>
+            <li>Farquhar, G., Rocktaeschel, T., Igl, M., & Whiteson, S. (2018). "TreeQN and ATreeC: Differentiable Tree-Structured Models for Deep Reinforcement Learning." <em>arXiv preprint arXiv:1710.11417</em>.</li>
+        </ul>
+    </section>
+    
+    
+
+    <footer>
+        <p>CMSC818B Mini Project 1 - Team Members: Sai Jagadeesh Muralikrishnan, Varun Lakshmanan, Nitish Ravichandran Raveendran</p>
+        <p>&copy; 2024 Monte Carlo Tree Search Guide</p>
+    </footer>
+</body>
+</html>
