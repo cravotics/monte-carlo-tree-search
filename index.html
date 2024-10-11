@@ -242,8 +242,8 @@
         <p><strong>AlphaGo</strong> is perhaps the most famous application of MCTS, where it was used in combination with deep neural networks to conquer the ancient board game Go. Go is notorious for its vast search space—far exceeding that of chess—making traditional brute-force approaches infeasible. In AlphaGo, <strong>MCTS simulated different sequences of moves to evaluate their potential outcomes</strong>, while deep neural networks predicted the probability of winning from each state. The integration of MCTS enabled the system to <strong>efficiently explore promising moves by balancing exploration and exploitation</strong>. This approach allowed AlphaGo to achieve superhuman performance, culminating in a <strong>victory against world champion Lee Sedol in 2016</strong>, marking a significant breakthrough in AI research.</p>
         <p>AlphaGo Zero, a successor to AlphaGo, achieved superhuman performance without using human game data. Instead, it learned entirely from self-play using reinforcement learning, starting from random play. This version further optimized the use of MCTS in conjunction with deep learning by employing a single neural network to represent both policy and value, thereby simplifying the architecture while improving performance.</p>
         <figure>
-        <img src="alpha_go.png" alt="AlphaGo Visualization" title="AlphaGo Visualization" style="max-width:100%; height:auto;">
-        <figcaption>Figure 1: Visualization of AlphaGo's strategy using Monte-Carlo Tree Search in the game of Go.</figcaption>
+            <img src="alpha_go.png" alt="AlphaGo Visualization" title="AlphaGo Visualization" style="max-width:100%; height:auto;">
+            <figcaption>Figure 1: Visualization of AlphaGo's strategy using Monte-Carlo Tree Search in the game of Go.</figcaption>
         </figure>
     
         <h3>AlphaZero</h3>
@@ -251,10 +251,16 @@
     
         <h3>MuZero</h3>
         <p><strong>MuZero</strong> further advances the application of MCTS by <strong>learning not only the optimal policy but also the model of the environment</strong>. It combines MCTS with <strong>model-based reinforcement learning</strong>, where the agent learns to predict the environment's dynamics (transitions and rewards) through experience. This allows MuZero to be applied to a broader range of problems, including classic board games like chess, Go, and shogi, as well as <strong>visually rich environments in Atari games</strong>. By <strong>learning a model of the environment</strong>, MuZero can simulate future outcomes using MCTS even when the underlying rules are not known, making it a <strong>powerful tool for decision-making in complex, real-world scenarios</strong>.</p>
+        <figure>
+            <img src="1.png" alt="MuZero Diagram" title="MuZero Diagram" style="max-width:100%; height:auto;">
+            <figcaption>Figure 2: Diagram showing how MuZero uses Monte-Carlo Tree Search (MCTS) for planning and learning.</figcaption>
+        </figure>
+        <p>In MuZero, MCTS is used to plan the agent's actions by simulating different sequences of actions and their corresponding outcomes. As shown in the diagram, MuZero predicts the future dynamics of the environment (such as the next state and reward) based on its learned model. MCTS is used to evaluate possible actions by simulating multiple steps ahead, with the agent predicting state transitions, rewards, and policy values. These predictions are then used to expand the search tree and choose the most promising actions. The process involves iterating over simulations to refine the estimates of action values, helping MuZero make more informed decisions in complex environments where the exact rules may not be fully known.</p>
         
         <h3>TreeQN and ATreeC</h3>
         <p>In the realm of deep reinforcement learning, <strong>TreeQN and ATreeC</strong> are algorithms that incorporate MCTS into the training process to enhance decision-making capabilities. In TreeQN, <strong>MCTS is integrated with Q-learning</strong> to build a tree of future states, allowing the agent to <strong>simulate potential future scenarios</strong> to improve its action-value estimates. Similarly, <strong>ATreeC extends actor-critic methods by using MCTS to perform lookahead planning during training</strong>. These methods demonstrate how <strong>incorporating tree search within RL frameworks</strong> can help the agent learn more effective policies, particularly in <strong>environments with long-term dependencies or sparse rewards</strong>, where standard RL techniques might struggle.</p>
     </section>
+    
     
     
     
