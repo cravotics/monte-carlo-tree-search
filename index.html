@@ -169,7 +169,7 @@
             leaf = traverse(root)
             
             # Step 2: Expansion
-            if not fully_expanded(leaf) and not is_terminal(leaf):
+            if not is_terminal(leaf):
                 leaf = expand(leaf)
             
             # Step 3: Simulation (Rollout)
