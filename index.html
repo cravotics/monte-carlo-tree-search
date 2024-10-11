@@ -245,6 +245,12 @@
             <img src="alpha_go.png" alt="AlphaGo Visualization" title="AlphaGo Visualization" style="max-width:100%; height:auto;">
             <figcaption>Figure 1: Visualization of AlphaGo's strategy using Monte-Carlo Tree Search in the game of Go.</figcaption>
         </figure>
+        <ol>
+            <li><strong>Selection</strong>: During the selection phase, AlphaGo selects the most promising node to explore by calculating the upper confidence bound for trees (UCT). The UCT balances between exploiting known high-reward moves (high Q-values) and exploring less-visited nodes (guided by the exploration term). The move with the highest value is chosen for further exploration.</li>
+            <li><strong>Expansion</strong>: In this phase, the selected node is expanded by adding new child nodes representing potential future moves. This step increases the search tree's depth and breadth, allowing AlphaGo to consider more potential game outcomes.</li>
+            <li><strong>Evaluation</strong>: The newly expanded node is then evaluated by running a rollout (simulated play) to predict the outcome from that position. Deep neural networks are used to estimate the value of the game state and the policy (likelihood of each move).</li>
+            <li><strong>Backup</strong>: Finally, the results of the evaluation are propagated back through the tree, updating the Q-values for all the nodes along the path. This step helps AlphaGo refine its estimates of the action values and select more promising moves in subsequent simulations.</li>
+        </ol>
     
         <h3>AlphaZero</h3>
         <p><strong>AlphaZero</strong>, an evolution of AlphaGo Zero, generalizes the approach to master multiple games—such as chess, shogi, and Go—without any domain-specific knowledge. In contrast to traditional game-playing programs that rely on handcrafted evaluation functions and domain-specific adaptations, <strong>AlphaZero started with no prior knowledge and learned purely through self-play</strong>, given only the game rules. The same algorithm and neural network architecture were applied to all three games, demonstrating that a <strong>general-purpose reinforcement learning algorithm can achieve superhuman performance across multiple challenging games</strong>. MCTS guided the learning process by simulating different moves during training, evaluating the outcomes, and <strong>using the results to improve the policy and value networks</strong>.</p>
