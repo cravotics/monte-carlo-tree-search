@@ -190,7 +190,10 @@ pre code .string {
 pre code .number {
     color: #b5cea8;
 }
-
+figcaption {
+    text-align: center;
+    font-weight: bold;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     body {
